@@ -28,3 +28,26 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+
+
+def dish_view(request, dish):
+    template_name = 'calculator/index.html'
+
+    recipe = DATA[dish]
+    servings = int(request.GET.get("servings", 1))
+
+    #make copy of dict
+    recipe_servings = {}
+    recipe_servings.update(recipe)
+
+    #count ingredient with number of servings
+    for ingredient in recipe_servings:
+         recipe_servings[ingredient] = recipe_servings[ingredient] * servings
+
+    #parametres for template
+    context = {
+        'recipe': recipe_servings,
+        'servings': servings
+    }
+
+    return render(request, template_name, context)
